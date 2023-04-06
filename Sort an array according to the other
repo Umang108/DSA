@@ -1,0 +1,33 @@
+class Solution{
+    public:
+    // A1[] : the input array-1
+    // N : size of the array A1[]
+    // A2[] : the input array-2
+    // M : size of the array A2[]
+    
+    //Function to sort an array according to the other array.
+    vector<int> sortA1ByA2(vector<int> arr1, int N, vector<int> arr2, int M) 
+    {
+        //Your code here
+        vector<int>ans;
+        map<int,int>mp;
+        for(auto x :arr1)
+            mp[x]++;
+        for(auto tem: arr2){
+            if(mp.find(tem)!=mp.end()){
+                auto x= mp.find(tem);
+                int count =x->second;
+                vector<int>v(count,tem);
+                ans.insert(ans.end(),v.begin(),v.end());
+                mp.erase(tem);
+            }
+        }
+        for(auto x: mp){
+            int ele=x.first;
+            int count=x.second;
+            vector<int>v(count,ele);
+            ans.insert(ans.end(),v.begin(),v.end());
+        }
+        return ans;
+    } 
+};
