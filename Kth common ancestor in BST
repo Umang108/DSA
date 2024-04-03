@@ -1,0 +1,46 @@
+#include <vector>
+
+class Node {
+public:
+    int data;
+    Node* left;
+    Node* right;
+};
+
+class Solution {
+public:
+    int kthCommonAncestor(Node* root, int k, int x, int y) {
+        Node* LCA = lca(root, x, y);
+        std::vector<int> al;
+        search(root, LCA, al);
+        return (al.size() - k < 0) ? -1 : al[al.size() - k];
+    }
+
+    void search(Node* root, Node* x, std::vector<int>& al) {
+        while (root != nullptr) {
+            al.push_back(root->data);
+            if (root->data == x->data) {
+                return;
+            }
+            if (root->data < x->data) {
+                root = root->right;
+            } else {
+                root = root->left;
+            }
+        }
+    }
+
+    Node* lca(Node* root, int n1, int n2) {
+        while (root != nullptr) {
+            if (root->data > n1 && root->data > n2) {
+                root = root->left;
+            } else if (root->data < n1 && root->data < n2) {
+                root = root->right;
+            } else {
+                break;
+            }
+        }
+        return root;
+    }
+};
+
