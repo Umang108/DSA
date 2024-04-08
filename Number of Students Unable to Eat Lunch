@@ -1,0 +1,48 @@
+class Solution {
+public:
+    int countStudents(vector<int>& students, vector<int>& sandwiches) {
+        stack<int>sandwich;
+        queue<int>student;
+        int n=students.size();
+        for(int i=0;i<n;i++){
+            sandwich.push(sandwiches[n-1-i]);
+            student.push(students[i]);
+        }
+        int sandmiss=0;
+        while(!student.empty()){
+            if(sandwich.top()==student.front()){
+                sandwich.pop();
+                student.pop();
+                sandmiss=0;
+            }
+            else{
+                student.push(student.front());
+                student.pop();
+                sandmiss++;
+            }
+        }
+        return student.size();
+    }
+};
+
+
+//2nd sol
+
+
+class Solution {
+ public:
+  int countStudents(vector<int>& students, vector<int>& sandwiches) {
+    vector<int> count(2);
+
+    for (const int student : students)
+      ++count[student];
+
+    for (int i = 0; i < sandwiches.size(); ++i) {
+      if (count[sandwiches[i]] == 0)
+        return sandwiches.size() - i;
+      --count[sandwiches[i]];
+    }
+
+    return 0;
+  }
+};
