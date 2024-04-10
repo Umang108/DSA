@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<int> deckRevealedIncreasing(vector<int>& deck) {
+        sort(deck.begin(), deck.end());
+        queue<int> indexes;
+        vector<int> result(deck.size());
+
+        // Initialize the queue with indexes 0 to n-1
+        for (int i = 0; i < deck.size(); ++i)
+            indexes.push(i);
+
+        for (int card : deck) {
+            // Place the smallest card to the next available index
+            result[indexes.front()] = card;
+            indexes.pop();
+
+            // If there are still unrevealed cards, move the next index to the
+            // back
+            if (!indexes.empty()) {
+                indexes.push(indexes.front());
+                indexes.pop();
+            }
+        }
+
+        return result;
+    }
+};
