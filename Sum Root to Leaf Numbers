@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int sumNumbers(TreeNode* root) {
+        return solve(root, 0);
+    }
+
+private:
+    int solve(TreeNode* node, int currentSum) {
+        if (!node) {
+            return 0;
+        }
+
+        currentSum = currentSum * 10 + node->val;
+        if (!node->left && !node->right) {
+            return currentSum;
+        }
+        return solve(node->left, currentSum) + solve(node->right, currentSum);
+    }
+};
