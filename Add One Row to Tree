@@ -1,0 +1,42 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+    void dfs(TreeNode* node,int val, int depth, int currdepth){
+        if(node==nullptr) return;
+        if(currdepth<depth-1){
+            dfs(node->left, val,  depth,  currdepth+1);
+            dfs(node->right, val,  depth,  currdepth+1);
+        }
+        if(currdepth==depth-1){
+            TreeNode* exLC=node->left;
+            TreeNode* exRC=node->right;
+            TreeNode* newLC=new TreeNode(val);
+            TreeNode* newRC=new TreeNode(val);
+            node->left=newLC;
+            newLC->left=exLC;
+
+            node->right=newRC;
+            newRC->right=exRC;
+        }
+    }
+public:
+    TreeNode* addOneRow(TreeNode* root, int val, int depth) {
+        if(depth==1){
+            TreeNode* curr= root;
+            TreeNode* newNode=new TreeNode(val);
+            newNode->left=curr;
+            return newNode;
+        }
+        dfs(root,val,depth,1);
+        return root;
+    }
+};
