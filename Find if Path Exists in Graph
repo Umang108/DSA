@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool validPath(int n, vector<vector<int>>& edges, int source, int destination) {
+        vector<vector<int>> adjList(n);
+        for (const auto& edge : edges) {
+            adjList[edge[0]].push_back(edge[1]);
+            adjList[edge[1]].push_back(edge[0]);
+        }
+        unordered_set<int> visited;
+        return dfs(adjList, visited, source, destination);
+    }
+    
+private:
+    bool dfs(vector<vector<int>>& adjList, unordered_set<int>& visited, int current, int destination) {
+        if (current == destination) {
+            return true;
+        }
+        visited.insert(current);
+        for (int neighbor : adjList[current]) {
+            if (visited.find(neighbor) == visited.end()) {
+                if (dfs(adjList, visited, neighbor, destination)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
