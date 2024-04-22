@@ -1,0 +1,23 @@
+class Solution {
+  public:
+    int minRow(int n, int m, vector<vector<int>> a) {
+        int minOnes = m + 1; 
+        int minRowIndex = -1; 
+        
+        for (int i = 0; i < n; ++i) {
+            int ones = 0;
+            for (int j = 0; j < m; ++j) {
+                if (a[i][j] == 1) {
+                    ++ones;
+                }
+            }
+            
+            if (ones < minOnes) {
+                minOnes = ones;
+                minRowIndex = i + 1; // 1-based index
+            }
+        }
+        
+        return minRowIndex;
+    }
+};
