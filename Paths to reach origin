@@ -1,0 +1,23 @@
+class Solution
+{
+public:  //code here
+        const int MOD = 1000000007;
+
+    int ways(int x, int y) {
+        vector<int> dp(y + 1, 0);
+    
+        // Base case: Only one way to reach any point on the first column
+        for (int j = 0; j <= y; ++j) {
+            dp[j] = 1;
+        }
+    
+        // Fill the dp array
+        for (int i = 1; i <= x; ++i) {
+            for (int j = 1; j <= y; ++j) {
+                dp[j] = (dp[j] + dp[j - 1]) % MOD;
+            }
+        }
+    
+        return dp[y];
+    }
+};
