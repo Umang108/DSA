@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int longestIdealString(string s, int k) {
+        int n=s.size();
+        vector<int>v(26,0);
+        v[s[n-1]-'a']=1;
+        for(int i=n-2;i>=0;i--){
+            int lb=max(0,(s[i]-'a')-k);
+            int ub=min(25,(s[i]-'a')+k);
+            int ans=0;
+            for(int i=lb;i<=ub;i++)
+                ans=max(ans,v[i]);
+            v[s[i]-'a']=max(v[s[i]-'a'],ans+1);    
+        }
+        int ans=0;
+        for(int i=0;i<26;i++)
+            ans=max(ans,v[i]);
+        return ans;
+    }
+};
