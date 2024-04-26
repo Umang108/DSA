@@ -1,0 +1,57 @@
+class Solution {
+public:
+    int n;
+    
+    int minFallingPathSum(vector<vector<int>>& grid) {
+        int n = grid.size();
+        
+        vector<vector<int>> t(n, vector<int>(n, INT_MAX));
+
+        int nextMin1Col = -1;
+        int nextMin2Col = -1;
+        
+        for (int col = 0; col < n; col++) {
+            t[n - 1][col] = grid[n - 1][col];
+            
+            if(nextMin1Col == -1 || t[n - 1][col] <= t[n-1][nextMin1Col]) {
+                nextMin2Col = nextMin1Col;
+                nextMin1Col = col;
+            } else if(nextMin2Col == -1 || t[n - 1][col] <= t[n-1][nextMin2Col]) {
+                nextMin2Col = col;
+            }
+        }
+
+        for (int row = n - 2; row >= 0; row--) {
+            
+            int min1Col = -1;
+            int min2Col = -1;
+            
+            for (int col = 0; col < n; col++) {
+                
+                if(col != nextMin1Col) {
+                    t[row][col] = grid[row][col] + t[row+1][nextMin1Col];
+                } else {
+                    t[row][col] = grid[row][col] + t[row+1][nextMin2Col];
+                }
+                
+                if(min1Col == -1 || t[row][col] <= t[row][min1Col]) {
+                    min2Col = min1Col;
+                    min1Col = col;
+                } else if(min2Col == -1 || t[row][col] <= t[row][min2Col]) {
+                    min2Col = col;
+                }
+            }
+                            
+            nextMin1Col = min1Col;
+            nextMin2Col = min2Col;
+                
+        }
+
+        int result = INT_MAX;
+        for (int col = 0; col < n; col++) {
+            result = min(result, t[0][col]);
+        }
+
+        return result;
+    }
+};
