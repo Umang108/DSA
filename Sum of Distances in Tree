@@ -1,0 +1,34 @@
+class Solution {
+public:
+    vector<int> sumOfDistancesInTree(int n, vector<vector<int>>& edges) {
+        vector<vector<int>> graph(n);
+        vector<int> count(n, 1), res(n, 0);
+        
+        for (const auto& edge : edges) {
+            graph[edge[0]].push_back(edge[1]);
+            graph[edge[1]].push_back(edge[0]);
+        }
+        
+        dfs(0, -1, graph, count, res);
+        dfs2(0, -1, graph, count, res, n);
+        
+        return res;
+    }
+    
+    void dfs(int node, int parent, const vector<vector<int>>& graph, vector<int>& count, vector<int>& res) {
+        for (int neighbor : graph[node]) {
+            if (neighbor == parent) continue;
+            dfs(neighbor, node, graph, count, res);
+            count[node] += count[neighbor];
+            res[node] += res[neighbor] + count[neighbor];
+        }
+    }
+    
+    void dfs2(int node, int parent, const vector<vector<int>>& graph, const vector<int>& count, vector<int>& res, int n) {
+        for (int neighbor : graph[node]) {
+            if (neighbor == parent) continue;
+            res[neighbor] = res[node] - count[neighbor] + n - count[neighbor];
+            dfs2(neighbor, node, graph, count, res, n);
+        }
+    }
+};
