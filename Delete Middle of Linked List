@@ -1,0 +1,28 @@
+class Solution{
+    public:
+    Node* deleteMid(Node* head)
+    {
+        // Your Code Here
+        if (!head || !head->next) // If the list is empty or contains only one node
+            return nullptr;
+
+        Node* slow = head;
+        Node* fast = head;
+        Node* prev = nullptr;
+
+        // Move fast pointer two steps and slow pointer one step
+        while (fast && fast->next) {
+            prev = slow;
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+
+        // Skip the middle node(s)
+        prev->next = slow->next;
+
+        // Delete the middle node(s)
+        delete slow;
+
+        return head;
+    }
+};
