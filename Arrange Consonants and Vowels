@@ -1,0 +1,46 @@
+class Solution
+{
+    public:
+    struct Node* arrangeCV(Node *head)
+    {
+
+           Node *vowels = new Node('0');
+        Node *vowelsTail = vowels;
+        Node *consonants = new Node('0'); 
+        Node *consonantsTail = consonants;
+    
+        Node *curr = head;
+        while (curr != nullptr) {
+            if (curr->data == 'a' || curr->data == 'e' || curr->data == 'i' || curr->data == 'o' || curr->data == 'u') {
+                vowelsTail->next = curr;
+                vowelsTail = vowelsTail->next;
+            } else {
+                consonantsTail->next = curr;
+                consonantsTail = consonantsTail->next;
+            }
+            curr = curr->next;
+        }
+    
+        // Merge the vowels and consonants lists
+        vowelsTail->next = consonants->next;
+        consonantsTail->next = nullptr;
+    
+        // Update head of the list
+        head = vowels->next;
+    
+        // Free dummy heads
+        delete vowels;
+        delete consonants;
+    
+        return head;
+    }
+    void printList(Node* head) {
+        Node* curr = head;
+        while (curr != nullptr) {
+            cout << curr->data << " -> ";
+            curr = curr->next;
+        }
+        cout << "NULL" << endl;
+    }
+
+};
