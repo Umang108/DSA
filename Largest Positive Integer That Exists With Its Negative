@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int findMaxK(vector<int>& nums) {
+        std::unordered_set<int> numSet(nums.begin(), nums.end());
+        int largestK = -1;
+
+        for (int num : nums) {
+            if (numSet.find(-num) != numSet.end()) {
+                largestK = std::max(largestK, std::abs(num));
+            }
+        }
+
+        return largestK == -1 ? -1 : largestK;
+    }
+};
