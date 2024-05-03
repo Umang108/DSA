@@ -1,0 +1,22 @@
+class Solution
+{
+    public:
+    // function should print the nodes at k distance from root
+        void findKDistance(Node *root, int k, int currDistance, vector<int> &result) {
+            if (root == NULL) return;
+        
+            if (currDistance == k) {
+                result.push_back(root->data);
+                return;
+            }
+        
+            findKDistance(root->left, k, currDistance + 1, result);
+            findKDistance(root->right, k, currDistance + 1, result);
+        }
+        
+        vector<int> Kdistance(Node *root, int k) {
+            vector<int> result;
+            findKDistance(root, k, 0, result);
+            return result;
+        }
+};
