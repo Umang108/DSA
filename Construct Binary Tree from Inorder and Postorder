@@ -1,0 +1,31 @@
+class Solution
+{
+    public:
+
+    //Function to return a tree created from postorder and inoreder traversals.
+    unordered_map<int, int> index_map;
+
+    Node* buildTreeUtil(int in[], int post[], int in_start, int in_end, int post_start, int post_end) {
+        if (in_start > in_end || post_start > post_end)
+            return NULL;
+    
+        int root_val = post[post_end];
+        Node* root = new Node(root_val);
+    
+        int root_index = index_map[root_val];
+        int left_subtree_size = root_index - in_start;
+    
+        root->left = buildTreeUtil(in, post, in_start, root_index - 1, post_start, post_start + left_subtree_size - 1);
+        root->right = buildTreeUtil(in, post, root_index + 1, in_end, post_start + left_subtree_size, post_end - 1);
+    
+        return root;
+    }
+    
+    Node *buildTree(int in[], int post[], int n) {
+        index_map.clear();
+        for (int i = 0; i < n; i++)
+            index_map[in[i]] = i;
+    
+        return buildTreeUtil(in, post, 0, n - 1, 0, n - 1);
+    }
+};
