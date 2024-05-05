@@ -1,0 +1,33 @@
+class Solution{
+  public:
+    vector <int> verticalSum(Node *root) {
+        // add code here.
+            vector<int> result;
+        if (root == nullptr) return result;
+    
+        // Map to store vertical sums
+        map<int, int> mp;
+    
+        // Calculate vertical sums
+        verticalSumUtil(root, 0, mp);
+    
+        // Store the sums in the result vector
+        for (auto it = mp.begin(); it != mp.end(); ++it) {
+            result.push_back(it->second);
+        }
+    
+        return result;
+    }
+    void verticalSumUtil(Node* root, int hd, map<int, int>& mp) {
+        if (root == nullptr) return;
+    
+        // Update the sum for this vertical line
+        mp[hd] += root->data;
+    
+        // Traverse left subtree with horizontal distance hd - 1
+        verticalSumUtil(root->left, hd - 1, mp);
+    
+        // Traverse right subtree with horizontal distance hd + 1
+        verticalSumUtil(root->right, hd + 1, mp);
+    }
+};
