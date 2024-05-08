@@ -1,0 +1,35 @@
+class Solution {
+public:
+    vector<string> findRelativeRanks(vector<int>& score) {
+        int n = score.size();
+        vector<string> result(n);
+        map<int, int, greater<int>> scoreIndexMap;
+
+        // Create a map to store each athlete's score and their original index
+        for (int i = 0; i < n; ++i) {
+            scoreIndexMap[score[i]] = i;
+        }
+
+        // Sort the input array in descending order
+        std::sort(score.begin(), score.end(), std::greater<int>());
+
+        // Assign ranks to athletes based on their positions
+        for (int i = 0; i < n; ++i) {
+            int rank = i + 1;
+            int index = scoreIndexMap[score[i]];
+
+            // Determine rank
+            if (rank == 1) {
+                result[index] = "Gold Medal";
+            } else if (rank == 2) {
+                result[index] = "Silver Medal";
+            } else if (rank == 3) {
+                result[index] = "Bronze Medal";
+            } else {
+                result[index] = to_string(rank);
+            }
+        }
+
+        return result;
+    }
+};
