@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<int> kthSmallestPrimeFraction(vector<int>& arr, int k) {
+            int n = arr.size();
+        double low = 0.0, high = 1.0;
+        
+        while (low < high) {
+            double mid = low + (high - low) / 2;
+            int count = 0;
+            pair<int, int> res = {0, 1}; // Initialize the result fraction
+            
+            for (int i = 0, j = 1; i < n - 1; ++i) {
+                while (j < n && arr[i] > mid * arr[j]) {
+                    j++;
+                }
+                count += (n - j);
+                if (j < n && res.first * arr[j] < res.second * arr[i]) {
+                    res = {arr[i], arr[j]};
+                }
+            }
+            
+            if (count == k) {
+                return {res.first, res.second};
+            } else if (count < k) {
+                low = mid;
+            } else {
+                high = mid;
+            }
+        }
+        
+        return {};
+    }
+};
