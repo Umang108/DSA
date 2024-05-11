@@ -1,0 +1,46 @@
+class Solution {
+public:
+    struct Worker {
+        int quality;
+        double wageRatio;
+        
+        Worker(int q, double wr) : quality(q), wageRatio(wr) {}
+    };
+    struct CompareWageRatio {
+        bool operator()(const Worker& w1, const Worker& w2) {
+            return w1.wageRatio < w2.wageRatio;
+        }
+    };
+    double mincostToHireWorkers(vector<int>& quality, vector<int>& wage, int k) {
+        int n = quality.size();
+        vector<Worker> workers;
+        
+        for (int i = 0; i < n; ++i) {
+            workers.emplace_back(quality[i], double(wage[i]) / quality[i]);
+        }
+        
+        sort(workers.begin(), workers.end(), [](const Worker& w1, const Worker& w2) {
+            return w1.wageRatio < w2.wageRatio;
+        });
+        
+        priority_queue<int> maxQuality;
+        double minCost = numeric_limits<double>::max();
+        int sumQuality = 0;
+        
+        for (const Worker& worker : workers) {
+            maxQuality.push(worker.quality);
+            sumQuality += worker.quality;
+            
+            if (maxQuality.size() > k) {
+                sumQuality -= maxQuality.top();
+                maxQuality.pop();
+            }
+            
+            if (maxQuality.size() == k) {
+                minCost = min(minCost, sumQuality * worker.wageRatio);
+            }
+        }
+        
+        return minCost;
+    }
+};
