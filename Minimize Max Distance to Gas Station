@@ -1,0 +1,30 @@
+class Solution {
+  public:
+    double findSmallestMaxDist(vector<int> &stations, int k) {
+        // Code here
+        int n = stations.size();
+        double left = 0;
+        double right = stations.back() - stations[0];
+        double epsilon = 1e-6; // Precision for binary search
+        
+        auto isPossible = [&](double d) {
+            int requiredStations = 0;
+            for (int i = 1; i < n; ++i) {
+                int dist = stations[i] - stations[i - 1];
+                requiredStations += static_cast<int>(dist / d);
+            }
+            return requiredStations <= k;
+        };
+        
+        while (right - left > epsilon) {
+            double mid = left + (right - left) / 2.0;
+            if (isPossible(mid)) {
+                right = mid;
+            } else {
+                left = mid;
+            }
+        }
+        
+        return round(right * 100) / 100.0;
+    }
+};
