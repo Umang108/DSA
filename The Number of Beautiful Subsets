@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int beautifulSubsets(vector<int>& nums, int k) {
+        int count = 0;
+        std::unordered_map<int, int> freq;
+        backtrack(nums, k, 0, freq, count);
+        return count;
+    }
+
+private:
+    void backtrack(const std::vector<int>& nums, int k, int index,
+                   std::unordered_map<int, int>& freq, int& count) {
+        if (index == nums.size()) {
+            if (!freq.empty()) {
+                ++count; // Count the current subset
+            }
+            return;
+        }
+
+        // Option 1: Exclude the current element
+        backtrack(nums, k, index + 1, freq, count);
+
+        // Option 2: Include the current element if it's valid
+        int current = nums[index];
+        if (freq[current - k] == 0 && freq[current + k] == 0) {
+            ++freq[current];
+            backtrack(nums, k, index + 1, freq, count);
+            --freq[current];
+        }
+    }
+};
