@@ -1,0 +1,31 @@
+class Solution{
+public:
+    int kPalindrome(string str, int n, int k)
+    {
+        // code here
+        int lpsLength = longestPalindromicSubseq(str, n);
+        int minDeletions = n - lpsLength;
+        return (minDeletions <= k) ? 1 : 0;
+    }
+private:
+    int longestPalindromicSubseq(const std::string& str, int n) {
+        std::vector<std::vector<int>> dp(n, std::vector<int>(n, 0));
+        
+        for (int i = 0; i < n; ++i) {
+            dp[i][i] = 1;
+        }
+        
+        for (int len = 2; len <= n; ++len) {
+            for (int i = 0; i <= n - len; ++i) {
+                int j = i + len - 1;
+                if (str[i] == str[j]) {
+                    dp[i][j] = dp[i + 1][j - 1] + 2;
+                } else {
+                    dp[i][j] = std::max(dp[i + 1][j], dp[i][j - 1]);
+                }
+            }
+        }
+        
+        return dp[0][n - 1];
+    }
+};
