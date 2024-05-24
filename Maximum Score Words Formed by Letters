@@ -1,0 +1,60 @@
+class Solution {
+public:
+    int maxScoreWords(vector<string>& words, vector<char>& letters,
+                      vector<int>& score) {
+        unordered_map<char, int> letterCount;
+        for (char letter : letters) {
+            letterCount[letter]++;
+        }
+
+        // Function to calculate the score of a single word
+        auto calculateWordScore =
+            [&](const string& word) {
+                int wordScore = 0;
+                for (char c : word) {
+                    wordScore += score[c - 'a'];
+                }
+                return wordScore;
+            };
+             vector<int>wordScores(words.size());
+                
+        for (int i = 0; i < words.size(); i++) {
+            wordScores[i] = calculateWordScore(words[i]);
+        }
+
+        int n = words.size();
+        int maxScore = 0;
+
+        // Iterate through all subsets of words using bit masking
+        for (int mask = 0; mask < (1 << n); mask++) {
+            unordered_map<char, int> currentLetterCount = letterCount;
+            int currentScore = 0;
+            bool valid = true;
+
+            for (int i = 0; i < n; i++) {
+                if (mask & (1 << i)) {
+                    // Check if the word can be formed with the remaining
+                    // letters
+                    for (char c : words[i]) {
+                        if (currentLetterCount[c] > 0) {
+                            currentLetterCount[c]--;
+                        } else {
+                            valid = false;
+                            break;
+                        }
+                    }
+                    if (valid) {
+                        currentScore += wordScores[i];
+                    } else {
+                        break;
+                    }
+                }
+            }
+            if (valid) {
+                maxScore = max(maxScore, currentScore);
+            }
+        }
+
+        return maxScore;
+    }
+};
