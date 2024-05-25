@@ -1,0 +1,36 @@
+class Solution {
+public:
+    vector<string> wordBreak(string s, vector<string>& wordDict) {
+        unordered_set<string> wordSet(wordDict.begin(), wordDict.end());
+        unordered_map<string, vector<string>> memo;
+        return dfs(s, wordSet, memo);
+    }
+
+private:
+    vector<string> dfs(string s, unordered_set<string>& wordSet,
+                       unordered_map<string, vector<string>>& memo) {
+        if (memo.find(s) != memo.end()) {
+            return memo[s];
+        }
+
+        vector<string> result;
+        if (s.empty()) {
+            result.push_back("");
+            return result;
+        }
+
+        for (int len = 1; len <= s.length(); ++len) {
+            string prefix = s.substr(0, len);
+            if (wordSet.find(prefix) != wordSet.end()) {
+                vector<string> suffixWays = dfs(s.substr(len), wordSet, memo);
+                for (string suffix : suffixWays) {
+                    result.push_back(prefix +
+                                     (suffix.empty() ? "" : " " + suffix));
+                }
+            }
+        }
+
+        memo[s] = result;
+        return result;
+    }
+};
