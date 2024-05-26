@@ -1,0 +1,30 @@
+class Solution {
+
+  public:
+    int findMinCost(string x, string y, int costX, int costY) {
+        // Your code goes here
+        int m = x.size();
+        int n = y.size();
+        
+        // Create a DP table to store lengths of longest common subsequence
+        vector<vector<int>> dp(m + 1, vector<int>(n + 1, 0));
+        
+        // Fill dp table using the above relations
+        for (int i = 1; i <= m; ++i) {
+            for (int j = 1; j <= n; ++j) {
+                if (x[i - 1] == y[j - 1])
+                    dp[i][j] = dp[i - 1][j - 1] + 1;
+                else
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
+            }
+        }
+        
+        // Length of the longest common subsequence
+        int lcs_length = dp[m][n];
+        
+        // Calculate the cost of deletions
+        int total_cost = (m - lcs_length) * costX + (n - lcs_length) * costY;
+        
+        return total_cost;
+    }
+};
