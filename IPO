@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int findMaximizedCapital(int k, int w, vector<int>& profits,
+                             vector<int>& capital) {
+        vector<std::pair<int, int>> projects;
+        int n = profits.size();
+        for (int i = 0; i < n; ++i) {
+            projects.push_back({capital[i], profits[i]});
+        }
+
+        // Sort the projects based on the capital required
+        std::sort(projects.begin(), projects.end());
+
+        // Max-heap to store the profits of the projects that can be started
+        std::priority_queue<int> maxHeap;
+
+        int currentCapital = w;
+        int projectIndex = 0;
+
+        for (int i = 0; i < k; ++i) {
+            // Add all the projects that can be started with the current capital
+            // to the heap
+            while (projectIndex < n &&
+                   projects[projectIndex].first <= currentCapital) {
+                maxHeap.push(projects[projectIndex].second);
+                ++projectIndex;
+            }
+
+            // If no projects can be started, break out of the loop
+            if (maxHeap.empty()) {
+                break;
+            }
+
+            // Select the project with the maximum profit
+            currentCapital += maxHeap.top();
+            maxHeap.pop();
+        }
+
+        return currentCapital;
+    }
+};
