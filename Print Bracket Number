@@ -1,0 +1,27 @@
+class Solution {
+  public:
+
+    vector<int> bracketNumbers(string str) {
+        // Your code goes here
+           stack<int> bracketStack;
+        vector<int> result;
+        int currentNumber = 1;
+        
+        for (char ch : str) {
+            if (ch == '(') {
+                // Push the current number to the stack and store it in result
+                bracketStack.push(currentNumber);
+                result.push_back(currentNumber);
+                currentNumber++;
+            } else if (ch == ')') {
+                // Pop the top number from the stack and store it in result
+                if (!bracketStack.empty()) {
+                    result.push_back(bracketStack.top());
+                    bracketStack.pop();
+                }
+            }
+        }
+        
+        return result;
+    }
+};
