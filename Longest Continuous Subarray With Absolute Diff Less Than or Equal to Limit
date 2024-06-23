@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int longestSubarray(vector<int>& nums, int limit) {
+            deque<int> maxDeque, minDeque;
+    int left = 0, maxLength = 0;
+    
+    for (int right = 0; right < nums.size(); ++right) {
+        // Maintain maxDeque (decreasing)
+        while (!maxDeque.empty() && nums[right] > nums[maxDeque.back()]) {
+            maxDeque.pop_back();
+        }
+        maxDeque.push_back(right);
+        
+        // Maintain minDeque (increasing)
+        while (!minDeque.empty() && nums[right] < nums[minDeque.back()]) {
+            minDeque.pop_back();
+        }
+        minDeque.push_back(right);
+        
+        // Ensure the window is valid
+        while (nums[maxDeque.front()] - nums[minDeque.front()] > limit) {
+            left++;
+            if (maxDeque.front() < left) maxDeque.pop_front();
+            if (minDeque.front() < left) minDeque.pop_front();
+        }
+        
+        // Update the maximum length of the valid subarray
+        maxLength = max(maxLength, right - left + 1);
+    }
+    
+    return maxLength;
+    }
+};
