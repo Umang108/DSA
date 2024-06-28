@@ -1,0 +1,37 @@
+class Solution {
+public:
+    long long maximumImportance(int n, vector<vector<int>>& roads) {
+        vector<int> degree(n, 0);
+
+        // Count the degree of each city
+        for (const auto& road : roads) {
+            degree[road[0]]++;
+            degree[road[1]]++;
+        }
+
+        // Pair the degree with the city index
+        vector<pair<int, int>> cityDegree;
+        for (int i = 0; i < n; ++i) {
+            cityDegree.push_back({degree[i], i});
+        }
+
+        // Sort cities by their degree in descending order
+        sort(cityDegree.rbegin(), cityDegree.rend());
+
+        // Vector to store the value assigned to each city
+        vector<int> value(n);
+
+        // Assign the values from n to 1 based on sorted degree
+        for (int i = 0; i < n; ++i) {
+            value[cityDegree[i].second] = n - i;
+        }
+
+        // Calculate the total importance of all roads
+        long long totalImportance = 0;
+        for (const auto& road : roads) {
+            totalImportance += value[road[0]] + value[road[1]];
+        }
+
+        return totalImportance;
+    }
+};
