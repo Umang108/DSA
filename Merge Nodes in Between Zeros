@@ -1,0 +1,41 @@
+class Solution {
+public:
+    ListNode* mergeNodes(ListNode* head) {
+        ListNode* current = head;
+        ListNode* result = nullptr;
+        ListNode* resultTail = nullptr;
+
+        while (current) {
+            if (current->val == 0) {
+                current = current->next;
+                if (!current)
+                    break;
+
+                int sum = 0;
+                while (current && current->val != 0) {
+                    sum += current->val;
+                    current = current->next;
+                }
+
+                // Create a new node with the sum
+                ListNode* newNode = new ListNode(sum);
+                if (!result) {
+                    result = newNode; // Initialize the result list
+                    resultTail = newNode;
+                } else {
+                    resultTail->next = newNode;
+                    resultTail = resultTail->next;
+                }
+            }
+        }
+
+        return result;
+    }
+    void printList(ListNode* node) {
+        while (node != nullptr) {
+            std::cout << node->val << " ";
+            node = node->next;
+        }
+        std::cout << std::endl;
+    }
+};
