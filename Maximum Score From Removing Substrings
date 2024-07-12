@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int maximumGain(string s, int x, int y) {
+        char first = 'a', second = 'b';
+        int first_points = x, second_points = y;
+        if (x < y) {
+            swap(first, second);
+            swap(first_points, second_points);
+        }
+        auto calculatePoints = [&](char first, char second, int first_points,
+                                   int second_points) {
+            int points = 0;
+            stack<char> stk;
+
+            for (char c : s) {
+                if (!stk.empty() && stk.top() == first && c == second) {
+                    stk.pop();
+                    points += first_points;
+                } else {
+                    stk.push(c);
+                }
+            }
+            string remaining;
+            while (!stk.empty()) {
+                remaining += stk.top();
+                stk.pop();
+            }
+            reverse(remaining.begin(), remaining.end());
+
+
+            for (char c : remaining) {
+                if (!stk.empty() && stk.top() == second && c == first) {
+                    stk.pop();
+                    points += second_points;
+                } else {
+                    stk.push(c);
+                }
+            }
+
+            return points;
+        };      
+        return calculatePoints(first, second, first_points, second_points);
+    }
+};
