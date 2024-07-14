@@ -1,0 +1,60 @@
+class Solution {
+public:
+    map<string, int> countAtoms(const string& formula) {
+        stack<map<string, int>> stk;
+        map<string, int> current;
+        int i = 0;
+        while (i < formula.size()) {
+            if (formula[i] == '(') {
+                stk.push(current);
+                current.clear();
+                i++;
+            } else if (formula[i] == ')') {
+                int j = i + 1;
+                int multiplier = 0;
+                while (j < formula.size() && isdigit(formula[j])) {
+                    multiplier = multiplier * 10 + (formula[j] - '0');
+                    j++;
+                }
+                if (multiplier == 0)
+                    multiplier = 1;
+                i = j;
+                map<string, int> temp = current;
+                current = stk.top();
+                stk.pop();
+                for (auto& [element, count] : temp) {
+                    current[element] += count * multiplier;
+                }
+            } else {
+                int j = i + 1;
+                while (j < formula.size() && islower(formula[j]))
+                    j++;
+                string element = formula.substr(i, j - i);
+                int count = 0;
+                while (j < formula.size() && isdigit(formula[j])) {
+                    count = count * 10 + (formula[j] - '0');
+                    j++;
+                }
+                if (count == 0)
+                    count = 1;
+                current[element] += count;
+                i = j;
+            }
+        }
+        return current;
+    }
+    string formatOutput(const map<string, int>& atomCounts) {
+        string result;
+        for (const auto& [element, count] : atomCounts) {
+            result += element;
+            if (count > 1) {
+                result += to_string(count);
+            }
+        }
+        return result;
+    }
+    string countOfAtoms(string formula) {
+        map<string, int> atomCounts = countAtoms(formula);
+        return formatOutput(atomCounts);
+    }
+};
