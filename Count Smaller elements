@@ -1,0 +1,44 @@
+class Solution {
+  public:
+    vector<int> constructLowerArray(vector<int> &nums) {
+        // code here
+            int n = nums.size();
+        vector<int> result(n, 0);
+        vector<pair<int, int>> numIndex;
+        
+        for (int i = 0; i < n; ++i) {
+            numIndex.push_back({nums[i], i});
+        }
+        
+        mergeSort(numIndex, 0, n, result);
+        return result;
+    
+    }
+    private:
+    void mergeSort(vector<pair<int, int>>& numIndex, int start, int end, vector<int>& result) {
+        if (end - start <= 1) return;
+        
+        int mid = start + (end - start) / 2;
+        mergeSort(numIndex, start, mid, result);
+        mergeSort(numIndex, mid, end, result);
+        
+        vector<pair<int, int>> temp;
+        int j = mid;
+        
+        for (int i = start; i < mid; ++i) {
+            while (j < end && numIndex[i].first > numIndex[j].first) {
+                temp.push_back(numIndex[j++]);
+            }
+            result[numIndex[i].second] += j - mid;
+            temp.push_back(numIndex[i]);
+        }
+        
+        for (int i = j; i < end; ++i) {
+            temp.push_back(numIndex[i]);
+        }
+        
+        for (int i = start; i < end; ++i) {
+            numIndex[i] = temp[i - start];
+        }
+    }
+};
