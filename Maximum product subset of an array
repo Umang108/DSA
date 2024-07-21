@@ -1,0 +1,53 @@
+class Solution {
+  public:
+    long long int findMaxProduct(vector<int>& arr) {
+        // Write your code here    
+        const int MOD = 1e9 + 7;
+        int n = arr.size();
+        
+        if (n == 1) return arr[0];
+        
+        int maxNegative = INT_MIN;
+        int negativeCount = 0;
+        long long product = 1;
+        bool hasZero = false;
+        bool hasPositive = false;
+        
+        for (int i = 0; i < n; ++i) {
+            if (arr[i] == 0) {
+                hasZero = true;
+                continue;
+            }
+            if (arr[i] < 0) {
+                negativeCount++;
+                maxNegative = max(maxNegative, arr[i]);
+            } else {
+                hasPositive = true;
+            }
+            product = (product * arr[i]) % MOD;
+            if (product < 0) product += MOD;
+        }
+        
+        
+        if (product == 1 && !hasPositive && negativeCount == 0) return 0;
+        
+        
+        if (negativeCount % 2 == 1) {
+            product = (product * pow(maxNegative, MOD-2, MOD)) % MOD; // Use modular multiplicative inverse
+            if (product < 0) product += MOD;
+        }
+        
+        return product;
+    }
+    long long pow(long long a, long long b, long long mod) {
+        long long result = 1;
+        while (b > 0) {
+            if (b % 2 == 1) {
+                result = (result * a) % mod;
+            }
+            a = (a * a) % mod;
+            b /= 2;
+        }
+        return result;
+    }
+};
