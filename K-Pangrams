@@ -1,0 +1,14 @@
+class Solution {
+  public:
+
+    bool kPangram(string str, int k) {
+            unordered_set<char> uniqueChars;
+        for (char ch : str) {
+            if (ch >= 'a' && ch <= 'z') {
+                uniqueChars.insert(ch);
+            }
+        }
+        int missingChars = 26 - uniqueChars.size();
+        return missingChars <= k;
+    }
+};
