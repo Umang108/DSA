@@ -2,13 +2,19 @@ class Solution {
   public:
 
     bool kPangram(string str, int k) {
-            unordered_set<char> uniqueChars;
-        for (char ch : str) {
-            if (ch >= 'a' && ch <= 'z') {
-                uniqueChars.insert(ch);
+        // codeGenius
+        int arr[26]={0}, count =0, op=0;
+        for(int i=0;i<str.size();i++){
+            if(str[i]!= ' '){
+                arr[str[i]-'a']++;
+                count++;
             }
         }
-        int missingChars = 26 - uniqueChars.size();
-        return missingChars <= k;
+        for(int i=0;i<26;i++){
+            if(arr[i]==0){
+                op++;
+            }
+        }
+        return (op <= k) &&(count>=26);
     }
 };
