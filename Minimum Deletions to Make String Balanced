@@ -1,0 +1,16 @@
+class Solution {
+public:
+    int minimumDeletions(string s) {
+        int count_b = 0;
+        int min_del = 0;
+        for (auto ch : s) {
+            if (ch == 'b')
+                count_b++;
+
+            else {
+                min_del = min(min_del + 1, count_b);
+            }
+        }
+        return min_del;
+    }
+};
