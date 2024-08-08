@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<vector<int>> spiralMatrixIII(int rows, int cols, int rStart,
+                                        int cStart) {
+        vector<vector<int>> result;
+        result.push_back({rStart, cStart});
+
+        vector<vector<int>> directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        int dirIndex = 0;
+        int steps = 1;
+
+        while (result.size() < rows * cols) {
+            for (int i = 0; i < 2; ++i) {
+                for (int j = 0; j < steps; ++j) {
+                    rStart += directions[dirIndex][0];
+                    cStart += directions[dirIndex][1];
+
+                    if (rStart >= 0 && rStart < rows && cStart >= 0 &&
+                        cStart < cols) {
+                        result.push_back({rStart, cStart});
+                    }
+                }
+                dirIndex = (dirIndex + 1) % 4;
+            }
+            ++steps;
+        }
+
+        return result;
+    }
+};
