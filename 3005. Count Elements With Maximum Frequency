@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int maxFrequencyElements(vector<int>& nums) {
+        vector<int> cnt(101);
+        int maxifreq = 0;
+        int maxians = 0;
+
+        for (int &i: nums) {
+            cnt[i]++;
+            maxifreq = max(maxifreq, cnt[i]);
+        }
+
+        for (int i=0;i<101;i++) {
+            if (cnt[i] == maxifreq) {
+                maxians += maxifreq;
+            }
+        }
+        return maxians;
+    }
+};
