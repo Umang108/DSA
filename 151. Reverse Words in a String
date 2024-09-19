@@ -1,0 +1,24 @@
+class Solution {
+public:
+    string reverseWords(string s) {
+        stack<string> words;
+        stringstream ss(s);
+        string word, reversedSentence;
+
+       
+        while (ss >> word) {
+            words.push(word);
+        }
+
+       
+        while (!words.empty()) {
+            reversedSentence += words.top();
+            words.pop();
+            if (!words.empty()) {
+                reversedSentence += " "; 
+            }
+        }
+
+        return reversedSentence;
+    }
+};
