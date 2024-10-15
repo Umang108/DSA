@@ -1,0 +1,22 @@
+class Solution {
+  public:
+    // Function to count the number of subarrays which adds to the given sum.
+    int subArraySum(vector<int>& arr, int tar) {
+        // Your code here
+        unordered_map<int, int> cumSumCount;
+        int count = 0;
+        int cumSum = 0;
+        cumSumCount[0] = 1;
+    
+        for (int num : arr) {
+            cumSum += num;
+            if (cumSumCount.find(cumSum - tar) != cumSumCount.end()) {
+                count += cumSumCount[cumSum - tar];
+            }
+    
+            cumSumCount[cumSum]++;
+        }
+    
+        return count;
+    }
+};
