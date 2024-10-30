@@ -1,0 +1,20 @@
+for (int num : arr) {
+        freqMap[num]++;
+    }
+
+    // Traverse the array again and count pairs
+    for (int num : arr) {
+        // Check if the current number - k exists
+        if (freqMap.find(num - k) != freqMap.end()) {
+            count += freqMap[num - k];
+        }
+        // Check if the current number + k exists
+        if (freqMap.find(num + k) != freqMap.end()) {
+            count += freqMap[num + k];
+        }
+        
+        // Remove the current number to avoid double counting
+        freqMap[num]--;
+    }
+
+    return count;
