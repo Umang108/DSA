@@ -1,0 +1,28 @@
+class Solution {
+  public:
+  
+  
+  
+    void solve(Node* root, int currsum, int &total){
+        if(root == NULL){
+            return ;
+        }
+        
+        currsum = currsum * 10 + root->data;
+        
+        if(!root->left && !root -> right){
+            total +=currsum;
+            return;
+        }
+        solve(root->left, currsum, total);
+        solve(root->right, currsum, total);
+    }
+    
+
+    int treePathsSum(Node *root) {
+        // code here.
+        int total=0;
+        solve(root,0,total);
+        return total;
+    }
+};
