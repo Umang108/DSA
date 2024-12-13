@@ -1,0 +1,32 @@
+class Solution {
+public:
+    long long findScore(vector<int>& nums) {
+        int n = nums.size();
+        vector<bool> marked(n, false);
+        long long score = 0;
+        set<pair<int, int>> unmarked;
+        for (int i = 0; i < n; i++) {
+            unmarked.insert({nums[i], i});
+        }
+
+        while (!unmarked.empty()) {
+            auto smallest = *unmarked.begin();
+            int value = smallest.first;
+            int index = smallest.second;
+
+            // Add its value to the score
+            score += value;
+
+            // Mark the current element and its adjacent elements
+            for (int i = index - 1; i <= index + 1; ++i) {
+                if (i >= 0 && i < n && !marked[i]) {
+                    marked[i] = true;
+                    unmarked.erase({nums[i], i}); // Remove from the set
+                }
+            }
+        }
+
+        return score;
+    }
+
+};
