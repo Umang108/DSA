@@ -1,0 +1,19 @@
+class Solution {
+public:
+    string shiftingLetters(string s, vector<vector<int>>& shifts) {
+        int n = s.size();
+        vector<int> diff(n+1 , 0);
+        for(auto& shift : shifts){
+            diff[shift[0]] += (shift[2] == 1) ? 1 : -1;
+            diff[shift[1]+1] += (shift[2] == 1) ? -1 : 1;
+        }
+        int currsum = 0;
+        for(int i = 0 ; i< n;i++){
+            currsum = (currsum + diff[i]) % 26;
+            if(currsum < 0) 
+                currsum = (currsum + 26) %26;
+            s[i] = 'a' + (s[i] - 'a' + currsum)%26;
+        }
+        return s;
+    }
+};
