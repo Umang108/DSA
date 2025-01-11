@@ -1,0 +1,49 @@
+class Solution {
+public:
+    int firstocc(vector<int>& nums, int target){
+        int left = 0;
+        int right = nums.size() - 1;
+        int mid = left + (right - left) / 2;
+        //vector<int> res;
+        int ans = -1;
+        while (left <= right) {
+            if (nums[mid] == target ) {
+                //res.push_back(mid);
+                ans = mid;
+                right = mid - 1;
+            } else if (target > nums[mid]) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+            mid = left + (right - left) / 2;
+        }
+        return ans;
+    }
+    int lastocc(vector<int>& nums, int target){
+        int left = 0;
+        int right = nums.size() - 1;
+        int mid = left + (right - left) / 2;
+        //vector<int> res;
+        int ans = -1;
+        while (left <= right) {
+            if (nums[mid] == target ) {
+                //res.push_back(mid);
+                ans = mid;
+                left = mid + 1;
+            } else if (target > nums[mid]) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+            mid = left + (right - left) / 2;
+        }
+        return ans;
+    }
+    vector<int> searchRange(vector<int>& nums, int target) {
+        vector<int>res(2,-1);
+        res[0] = firstocc(nums,target);
+        res[1] = lastocc(nums,target);
+        return res;
+    }
+};
