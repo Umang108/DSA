@@ -1,0 +1,22 @@
+class Solution {
+  public:
+    double power(double b, int e) {
+        // code here
+        double res = 1.0;
+        long long exp = e;
+        
+        if(exp < 0){
+            b = 1/b;
+            exp = -exp;
+        }
+        while(exp > 0){
+            if(exp % 2 == 1){
+                res *= b;
+            }
+            b = b * b;
+            exp = exp/2;
+        }
+        return res;
+        
+    }
+};
