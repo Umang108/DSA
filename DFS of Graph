@@ -1,0 +1,21 @@
+class Solution {
+  public:
+    void solve(int node, vector<vector<int>> &adj, unordered_set<int> &visited, vector<int> &result) {
+        visited.insert(node);
+        result.push_back(node);
+        
+        for (int neighbor : adj[node]) {
+            if (visited.find(neighbor) == visited.end()) {
+                solve(neighbor, adj, visited, result);
+            }
+        }
+    }
+    vector<int> dfs(vector<vector<int>>& adj) {
+        // Code here
+        vector<int> result;
+        unordered_set<int> visited;
+        solve(0, adj, visited, result);
+        return result;
+        
+    }
+};
