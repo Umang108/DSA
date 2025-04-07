@@ -1,0 +1,38 @@
+class Solution {
+  public:
+    bool dfs(int node, vector<vector<int>> &adj, vector<bool>& visited, vector<bool>& recstack) {
+        visited[node] = true;
+        recstack[node] = true;
+        
+        for (int neighbour : adj[node]) {
+            if (!visited[neighbour]) {
+                if (dfs(neighbour, adj, visited, recstack)) return true;
+            }
+            else if (recstack[neighbour]) {
+                return true; 
+            }
+        }
+
+        recstack[node] = false;
+        return false;
+    }
+
+    bool isCyclic(int V, vector<vector<int>> &edges) {
+        vector<vector<int>> adj(V);
+
+        for (auto& edge : edges) {
+            adj[edge[0]].push_back(edge[1]);
+        }
+
+        vector<bool> visited(V, false);
+        vector<bool> recstack(V, false);
+
+        for (int i = 0; i < V; ++i) {
+            if (!visited[i]) {
+                if (dfs(i, adj, visited, recstack)) return true;
+            }
+        }
+
+        return false;
+    }
+};
