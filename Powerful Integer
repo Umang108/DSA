@@ -1,0 +1,24 @@
+class Solution {
+  public:
+    int powerfulInteger(vector<vector<int>>& intervals, int k) {
+        // code here
+         map<int, int> events;
+
+        for (auto& interval : intervals) {
+            events[interval[0]] += 1;
+            events[interval[1] + 1] -= 1;
+        }
+    
+        int count = 0, maxPowerful = -1;
+        int prev = -1;
+        for (auto& [point, change] : events) {
+            if (count >= k) {
+                maxPowerful = max(maxPowerful, point - 1);
+            }
+            count += change;
+            prev = point;
+        }
+    
+        return maxPowerful;
+    }
+};
