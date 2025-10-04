@@ -1,0 +1,36 @@
+
+class Solution {
+  public:
+    vector<string> findExpr(string s, int target) {
+        vector<string> result;
+        backtrack(s, target, 0, 0, 0, "", result);
+        sort(result.begin(), result.end());
+        return result;
+    }
+
+  private:
+    void backtrack(const string &s, long long target, int pos,
+                   long long currVal, long long lastVal,
+                   string path, vector<string> &result) {
+        if (pos == s.size()) {
+            if (currVal == target) result.push_back(path);
+            return;
+        }
+
+        for (int i = pos; i < s.size(); i++) {
+            if (i != pos && s[pos] == '0') break;
+
+            string part = s.substr(pos, i - pos + 1);
+            long long num = stoll(part);
+
+            if (pos == 0) {
+                backtrack(s, target, i + 1, num, num, part, result);
+            } else {
+
+                backtrack(s, target, i + 1, currVal + num, num, path + "+" + part, result);
+                backtrack(s, target, i + 1, currVal - num, -num, path + "-" + part, result);
+                backtrack(s, target, i + 1, currVal - lastVal + lastVal * num, lastVal * num, path + "*" + part, result);
+            }
+        }
+    }
+};
