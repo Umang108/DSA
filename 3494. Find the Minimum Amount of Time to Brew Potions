@@ -1,0 +1,32 @@
+using ll = long long;
+
+class Solution {
+public:
+    ll minTime(vector<int>& skill, vector<int>& mana) {
+        int n = skill.size();
+        int m = mana.size();
+        vector<ll> finish_prev(n, 0), prefix(n, 0), finish(n, 0);
+
+        for (int j = 0; j < m; ++j) {
+            
+            for (int i = 0; i < n; ++i) {
+                ll p = 1LL * skill[i] * mana[j];
+                prefix[i] = (i == 0) ? p : (prefix[i-1] + p);
+            }
+
+            if (j == 0) {
+                for (int i = 0; i < n; ++i) finish_prev[i] = prefix[i];
+            } else {
+                ll Sj = LLONG_MIN / 4;
+                for (int i = 0; i < n; ++i) {
+                    ll offset = (i == 0) ? 0 : prefix[i-1];
+                    Sj = max(Sj, finish_prev[i] - offset);
+                }
+                for (int i = 0; i < n; ++i) finish[i] = Sj + prefix[i];
+                finish_prev.swap(finish);
+            }
+        }
+
+        return finish_prev[n-1];
+    }
+};
