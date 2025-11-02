@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int countUnguarded(int m, int n, vector<vector<int>>& guards, vector<vector<int>>& walls) {
+        set<pair<int, int>> guardSet, wallSet, guarded;
+    
+        for (auto& g : guards) guardSet.insert({g[0], g[1]});
+        for (auto& w : walls) wallSet.insert({w[0], w[1]});
+
+        vector<pair<int, int>> dirs = {{-1,0}, {1,0}, {0,-1}, {0,1}};
+        
+        for (auto& g : guards) {
+            int r = g[0], c = g[1];
+            for (auto& d : dirs) {
+                int x = r + d.first, y = c + d.second;
+                while (x >= 0 && x < m && y >= 0 && y < n) {
+                    if (wallSet.count({x, y}) || guardSet.count({x, y})) break;
+                    guarded.insert({x, y});
+                    x += d.first;
+                    y += d.second;
+                }
+            }
+        }
+        
+        int totalCells = m * n;
+        int occupied = guards.size() + walls.size() + guarded.size();
+        return totalCells - occupied;
+    }
+};
